@@ -14,13 +14,18 @@ class Board extends Component {
     this.state = {
       cards: [],
       error: [],
-      url: url,
+      baseUrl: url,
       boardName: boardName,
+      deleteCardUrl: "https://inspiration-board.herokuapp.com/cards/"
     };
   }
 
   componentDidMount(){
-    axios.get(this.state.url + this.state.boardName + "/cards")
+    this.getCards();
+  }
+
+  getCards(){
+    axios.get(this.state.baseUrl + this.state.boardName + "/cards")
     .then((response) => {
       this.setState({ cards: response.data });
     })
@@ -30,7 +35,14 @@ class Board extends Component {
   }
 
   deleteCardCallback = (cardID) => {
-    console.log(`in callback ${cardID}`)
+    axios.delete(this.state.deleteCardUrl + cardID)
+    .then((response) => {
+      console.log(`deleted ${response.data}`)
+      this.getCards();
+    })
+    .catch((error) => {
+      this.setState({ error: error.message });
+    });
   }
 
   render() {
