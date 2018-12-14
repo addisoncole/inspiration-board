@@ -19,22 +19,25 @@ class Board extends Component {
     };
   }
 
-componentDidMount(){
-  axios.get(this.state.url + this.state.boardName + "/cards")
-  .then((response) => {
-    this.setState({ cards: response.data });
-  })
-  .catch((error) => {
-    this.setState({ error: error.message });
-  });
-}
+  componentDidMount(){
+    axios.get(this.state.url + this.state.boardName + "/cards")
+    .then((response) => {
+      this.setState({ cards: response.data });
+    })
+    .catch((error) => {
+      this.setState({ error: error.message });
+    });
+  }
 
+  deleteCardCallback = (cardID) => {
+    console.log(`in callback ${cardID}`)
+  }
 
   render() {
     const cardData = this.state.cards
     const cardCollection = cardData.map((card) => {
       const newCard = card.card;
-      return ( <Card key={newCard.id} text={newCard.text} emoji={newCard.emoji}/>   )
+      return ( <Card key={newCard.id} id={newCard.id} text={newCard.text} emoji={newCard.emoji} deleteCardCallback={this.deleteCardCallback}/>   )
     });
 
     return (

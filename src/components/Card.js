@@ -6,6 +6,11 @@ import './Card.css';
 
 class Card extends Component {
 
+  deleteOnClick = () => {
+    console.log("delete clicked");
+    this.props.deleteCardCallback(this.props.id);
+  }
+
   render() {
     const text = this.props.text;
     let moji = this.props.emoji;
@@ -20,14 +25,17 @@ class Card extends Component {
           <div className="card__content-text">{text}</div>
           <div className="card__content-emoji">{moji}</div>
         </span>
+        <button className="card__delete" onClick={this.deleteOnClick}> X </button>
       </div>
     )
   }
 }
 
 Card.propTypes = {
+  id: PropTypes.number,
   text: PropTypes.string,
   emoji: PropTypes.string,
+  deleteCardCallback: PropTypes.func,
 };
 
 export default Card;

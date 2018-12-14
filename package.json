@@ -17,6 +17,9 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
+  "jest": {
+    "snapshotSerializers": ["enzyme-to-json/serializer"]
+  },
   "devDependencies": {
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
@@ -24,8 +27,4 @@
     "gh-pages": "^1.2.0"
   },
   "homepage": "http://adagold.github.io/inspiration-board"
-}
-
-"jest": {
-  "snapshotSerializers": ["enzyme-to-json/serializer"]
 }
