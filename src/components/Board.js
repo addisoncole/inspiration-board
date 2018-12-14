@@ -13,21 +13,41 @@ class Board extends Component {
 
     this.state = {
       cards: [],
+      error: [],
     };
   }
 
+componentDidMount(){
+  axios.get('https://inspiration-board.herokuapp.com/boards/zAddy/cards')
+  .then((response) => {
+    console.log(response.data)
+    this.setState({ cards: response.data });
+  })
+  .catch((error) => {
+    this.setState({ error: error.message });
+  });
+}
+
+
   render() {
+    const cardData = this.state.cards
+    const cardCollection = cardData.map((card) => {
+      console.log(card.card)
+      const newCard = card.card;
+      return ( <Card key={newCard.id} text={newCard.text} emoji={newCard.emoji}/>   )
+    });
+
     return (
       <div>
-        Board
+        {cardCollection}
       </div>
     )
   }
 
 }
 
-Board.propTypes = {
-
-};
+// Board.propTypes = {
+//
+// };
 
 export default Board;
