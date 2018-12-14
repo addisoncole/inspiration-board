@@ -8,19 +8,20 @@ import NewCardForm from './NewCardForm';
 import CARD_DATA from '../data/card-data.json';
 
 class Board extends Component {
-  constructor() {
-    super();
-
+  constructor(props) {
+    super(props);
+    const {url, boardName} = this.props;
     this.state = {
       cards: [],
       error: [],
+      url: url,
+      boardName: boardName,
     };
   }
 
 componentDidMount(){
-  axios.get('https://inspiration-board.herokuapp.com/boards/zAddy/cards')
+  axios.get(this.state.url + this.state.boardName + "/cards")
   .then((response) => {
-    console.log(response.data)
     this.setState({ cards: response.data });
   })
   .catch((error) => {
@@ -32,13 +33,12 @@ componentDidMount(){
   render() {
     const cardData = this.state.cards
     const cardCollection = cardData.map((card) => {
-      console.log(card.card)
       const newCard = card.card;
       return ( <Card key={newCard.id} text={newCard.text} emoji={newCard.emoji}/>   )
     });
 
     return (
-      <div>
+      <div className="board">
         {cardCollection}
       </div>
     )
@@ -46,8 +46,9 @@ componentDidMount(){
 
 }
 
-// Board.propTypes = {
-//
-// };
+Board.propTypes = {
+  url: PropTypes.string.isRequired,
+  boardName: PropTypes.string.isRequired,
+};
 
 export default Board;

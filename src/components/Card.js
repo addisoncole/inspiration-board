@@ -16,7 +16,10 @@ class Card extends Component {
 
     return (
       <div className="card">
-        {text} {moji}
+        <span className="card__content">
+          <div className="card__content-text">{text}</div>
+          <div className="card__content-emoji">{moji}</div>
+        </span>
       </div>
     )
   }
