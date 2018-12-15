@@ -7,14 +7,12 @@ import './Card.css';
 class Card extends Component {
 
   deleteOnClick = () => {
-    console.log("delete clicked");
     this.props.deleteCardCallback(this.props.id);
   }
 
   render() {
     const text = this.props.text;
     let moji = this.props.emoji;
-    console.log(moji);
     if (moji !== undefined && moji !== null) {
         moji = emoji.getUnicode(moji);
     }

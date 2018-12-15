@@ -5,7 +5,7 @@ import axios from 'axios';
 import './Board.css';
 import Card from './Card';
 import NewCardForm from './NewCardForm';
-import CARD_DATA from '../data/card-data.json';
+// import CARD_DATA from '../data/card-data.json';
 
 class Board extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class Board extends Component {
     this.getCards();
   }
 
-  getCards(){
+  getCards = () => {
     axios.get(this.state.baseUrl + this.state.boardName + "/cards")
     .then((response) => {
       this.setState({ cards: response.data });
@@ -45,20 +45,39 @@ class Board extends Component {
     });
   }
 
+  submitNewCard = (newMessage) => {
+    axios.post(this.state.baseUrl + this.state.boardName + "/cards" + "?text=" + newMessage.text + "&emoji=" + newMessage.emoji)
+    .then((response) => {
+      console.log(`sent ${response.data}`)
+      this.getCards();
+    })
+    .catch((error) => {
+      this.setState({ error: error.message });
+    });
+  }
+
+  submissionFormCallback = (newMessage) => {
+    this.submitNewCard(newMessage);
+  }
+
   render() {
+
     const cardData = this.state.cards
+
     const cardCollection = cardData.map((card) => {
       const newCard = card.card;
-      return ( <Card key={newCard.id} id={newCard.id} text={newCard.text} emoji={newCard.emoji} deleteCardCallback={this.deleteCardCallback}/>   )
+      return ( <Card key={newCard.id} id={newCard.id} text={newCard.text} emoji={newCard.emoji} deleteCardCallback={this.deleteCardCallback}/> )
     });
 
     return (
-      <div className="board">
-        {cardCollection}
+      <div>
+        <NewCardForm submissionFormCallback={this.submissionFormCallback}/>
+        <div className="board">
+          {cardCollection}
+        </div>
       </div>
     )
   }
-
 }
 
 Board.propTypes = {
